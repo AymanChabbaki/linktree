@@ -1,0 +1,727 @@
+/* Modern LinkTree CSS with Light/Dark Theme and Enhanced Responsiveness */
+
+/* CSS Reset and Base Styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Optimize performance */
+.particle, .logo, .social-link {
+  will-change: transform;
+}
+
+/* Only animate essential elements */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+:root {
+  /* AI & DEV Community Brand Colors */
+  --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  --secondary-gradient: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+  --accent-gradient: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+  --dark-gradient: linear-gradient(135deg, #2c3e50 0%, #000428 100%);
+  
+  /* Animation Timing */
+  --transition-fast: 0.2s ease-out;
+  --transition-medium: 0.4s ease-out;
+  --transition-slow: 0.8s ease-out;
+}
+
+/* Dark Theme Variables */
+[data-theme="dark"] {
+  --bg-primary: #0a0a0f;
+  --bg-secondary: rgba(255, 255, 255, 0.05);
+  --bg-card: rgba(255, 255, 255, 0.08);
+  --bg-card-hover: rgba(255, 255, 255, 0.12);
+  --text-primary: #ffffff;
+  --text-secondary: #b8bcc8;
+  --text-accent: #64ffda;
+  --border-color: rgba(255, 255, 255, 0.1);
+  --border-hover: rgba(100, 255, 218, 0.5);
+  --shadow-glow: 0 0 30px rgba(100, 255, 218, 0.3);
+  --shadow-card: 0 8px 32px rgba(0, 0, 0, 0.3);
+  --particles-bg: var(--accent-gradient);
+  /* Particle colors for dark theme */
+  --particle-primary: #ffffff;
+  --particle-accent: #64ffda;
+  --particle-secondary: #a855f7;
+}
+
+/* Light Theme Variables */
+[data-theme="light"] {
+  --bg-primary: #e6f2ff;
+  --bg-secondary: rgba(0, 0, 0, 0.05);
+  --bg-card: rgba(255, 255, 255, 0.8);
+  --bg-card-hover: rgba(255, 255, 255, 0.95);
+  --text-primary: #1a202c;
+  --text-secondary: #4a5568;
+  --text-accent: #3182ce;
+  --border-color: rgba(0, 0, 0, 0.1);
+  --border-hover: rgba(49, 130, 206, 0.5);
+  --shadow-glow: 0 0 30px rgba(49, 130, 206, 0.2);
+  --shadow-card: 0 8px 32px rgba(0, 0, 0, 0.1);
+  --particles-bg: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  /* Particle colors for light theme */
+  --particle-primary: #1a202c;
+  --particle-accent: #3182ce;
+  --particle-secondary: #4a5568;
+}
+
+/* Global Styles */
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  line-height: 1.6;
+  overflow-x: hidden;
+  transition: background-color var(--transition-medium), color var(--transition-medium);
+}
+
+.app {
+  min-height: 100vh;
+  background: 
+    /* Simple space gradient - much lighter */
+    radial-gradient(ellipse at center, rgba(25, 25, 112, 0.3) 0%, transparent 70%),
+    var(--bg-primary);
+  position: relative;
+  overflow: hidden;
+  transition: background var(--transition-medium);
+}
+
+/* Cosmic background animation */
+@keyframes cosmicShift {
+  0%, 100% {
+    background-position: 0% 0%, 0% 100%, 20% 80%, 80% 20%, 40% 40%, 0% 0%;
+  }
+  25% {
+    background-position: 10% 10%, 10% 90%, 30% 70%, 70% 30%, 50% 30%, 5% 5%;
+  }
+  50% {
+    background-position: 20% 20%, 20% 80%, 40% 60%, 60% 40%, 60% 20%, 10% 10%;
+  }
+  75% {
+    background-position: 10% 30%, 30% 70%, 50% 50%, 50% 50%, 30% 60%, 15% 5%;
+  }
+}
+
+/* Theme Toggle Button */
+.theme-toggle {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 1000;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  border: 1px solid var(--border-color);
+  background: var(--bg-card);
+  backdrop-filter: blur(10px);
+  color: var(--text-primary);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all var(--transition-medium);
+  box-shadow: var(--shadow-card);
+}
+
+.theme-toggle:hover {
+  transform: scale(1.1);
+  border-color: var(--border-hover);
+  box-shadow: var(--shadow-card), var(--shadow-glow);
+}
+
+.theme-toggle:active {
+  transform: scale(0.95);
+}
+
+/* Optimized starfield with simple particles */
+.particles-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.particle {
+  position: absolute;
+  border-radius: 50%;
+  opacity: 0.8;
+  animation: gentleFloat infinite ease-in-out;
+}
+
+/* Three simple star types for variety - with explicit colors for both themes */
+[data-theme="dark"] .particle:nth-child(4n) {
+  width: 2px;
+  height: 2px;
+  background: #ffffff;
+  box-shadow: 0 0 4px #ffffff;
+}
+
+[data-theme="dark"] .particle:nth-child(4n+1) {
+  width: 1px;
+  height: 1px;
+  background: #64ffda;
+  box-shadow: 0 0 2px #64ffda;
+}
+
+[data-theme="dark"] .particle:nth-child(4n+2) {
+  width: 1.5px;
+  height: 1.5px;
+  background: #a855f7;
+  box-shadow: 0 0 3px #a855f7;
+}
+
+[data-theme="dark"] .particle:nth-child(4n+3) {
+  width: 0.5px;
+  height: 0.5px;
+  background: #ffffff;
+  opacity: 0.9;
+}
+
+/* Light theme particles - explicit dark colors */
+[data-theme="light"] .particle:nth-child(4n) {
+  width: 6px;
+  height: 6px;
+  background: #000000;
+  box-shadow: 0 0 6px #000000;
+}
+
+[data-theme="light"] .particle:nth-child(4n+1) {
+  width: 4px;
+  height: 4px;
+  background: #3182ce;
+  box-shadow: 0 0 2px #3182ce;
+}
+
+[data-theme="light"] .particle:nth-child(4n+2) {
+  width: 3px;
+  height: 3px;
+  background: #4a5568;
+  box-shadow: 0 0 3px #4a5568;
+}
+
+[data-theme="light"] .particle:nth-child(4n+3) {
+  width: 2px;
+  height: 2px;
+  background: #1a202c;
+  opacity: 0.9;
+}
+
+/* Gentle floating animation - much more efficient */
+@keyframes gentleFloat {
+  0%, 100% { 
+    transform: translateY(0px);
+    opacity: 0.3;
+  }
+  50% { 
+    transform: translateY(-30px);
+    opacity: 0.8;
+  }
+}
+
+/* Main Container */
+
+@keyframes shootingStars {
+  0% {
+    transform: translateX(-100px) translateY(-100px);
+  }
+  100% {
+    transform: translateX(100vw) translateY(100vh);
+  }
+}
+
+@keyframes nebulaFloat {
+  0%, 100% {
+    transform: translateX(0%) translateY(0%) rotate(0deg);
+    opacity: 0.3;
+  }
+  33% {
+    transform: translateX(2%) translateY(-1%) rotate(1deg);
+    opacity: 0.4;
+  }
+  66% {
+    transform: translateX(-1%) translateY(2%) rotate(-1deg);
+    opacity: 0.5;
+  }
+}
+
+/* Main Container */
+.container {
+  position: relative;
+  z-index: 1;
+  max-width: 480px;
+  margin: 0 auto;
+  padding: 40px 20px;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Header Section */
+.header {
+  text-align: center;
+  margin-bottom: 50px;
+  opacity: 0;
+  transform: translateY(-30px);
+  transition: all var(--transition-slow);
+}
+
+.header.loaded {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.logo-container {
+  position: relative;
+  margin-bottom: 20px;
+  display: inline-block;
+}
+
+.logo {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  border: 3px solid transparent;
+  background: var(--primary-gradient);
+  background-clip: padding-box;
+  transition: all var(--transition-medium);
+  filter: drop-shadow(var(--shadow-glow));
+  animation: logoRotate 20s linear infinite;
+  position: relative;
+}
+
+.logo:hover {
+  transform: scale(1.1);
+  filter: drop-shadow(var(--shadow-glow)) drop-shadow(0 0 20px rgba(100, 255, 218, 0.4));
+}
+
+.logo-glow {
+  position: absolute;
+  top: -10px;
+  left: -10px;
+  right: -10px;
+  bottom: -10px;
+  background: var(--accent-gradient);
+  border-radius: 50%;
+  opacity: 0.3;
+  animation: simplePulse 3s ease-in-out infinite;
+  z-index: -1;
+}
+
+@keyframes simplePulse {
+  0%, 100% { 
+    transform: scale(1);
+    opacity: 0.3;
+  }
+  50% { 
+    transform: scale(1.05);
+    opacity: 0.5;
+  }
+}
+
+@keyframes logoRotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes pulse {
+  0%, 100% { 
+    transform: scale(1);
+    opacity: 0.3;
+  }
+  50% { 
+    transform: scale(1.1);
+    opacity: 0.1;
+  }
+}
+
+.title {
+  font-size: clamp(2rem, 5vw, 2.5rem);
+  font-weight: 800;
+  background: var(--primary-gradient);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 10px;
+  letter-spacing: -0.02em;
+  animation: textShine 3s ease-in-out infinite;
+}
+
+@keyframes textShine {
+  0%, 100% { filter: brightness(1); }
+  50% { filter: brightness(1.2); }
+}
+
+.subtitle {
+  color: var(--text-secondary);
+  font-size: clamp(0.9rem, 2.5vw, 1.1rem);
+  font-weight: 400;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+/* Links Container */
+.links-container {
+  width: 100%;
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: 40px;
+}
+
+/* Social Link Component */
+.social-link {
+  position: relative;
+  display: flex;
+  align-items: center;
+  padding: 18px 24px;
+  background: var(--bg-card);
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+  cursor: pointer;
+  transition: all var(--transition-medium);
+  opacity: 0;
+  transform: translateX(-50px);
+  overflow: hidden;
+  box-shadow: var(--shadow-card);
+}
+
+/* Highlighted inscription form styling */
+.social-link.highlighted {
+  background: linear-gradient(135deg, rgba(100, 255, 218, 0.15) 0%, rgba(52, 211, 153, 0.15) 100%);
+  border: 2px solid var(--text-accent);
+  box-shadow: 0 0 20px rgba(100, 255, 218, 0.3);
+  animation: highlightPulse 2s ease-in-out infinite;
+}
+
+.social-link.highlighted .link-text {
+  font-weight: 700;
+  color: var(--text-accent);
+}
+
+.social-link.highlighted .link-icon {
+  color: var(--text-accent);
+}
+
+.highlight-badge {
+  position: absolute;
+
+  right: 14px;
+  background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
+  color: white;
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 4px 8px;
+  border-radius: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  animation: badgeBounce 2s ease-in-out infinite;
+  box-shadow: 0 2px 8px rgba(238, 90, 36, 0.3);
+}
+
+@keyframes highlightPulse {
+  0%, 100% {
+    box-shadow: 0 0 20px rgba(100, 255, 218, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 30px rgba(100, 255, 218, 0.5);
+  }
+}
+
+@keyframes badgeBounce {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+}
+
+.social-link.visible {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.social-link:hover {
+  transform: translateY(-5px) scale(1.02);
+  background: var(--bg-card-hover);
+  border-color: var(--border-hover);
+  box-shadow: var(--shadow-card), var(--shadow-glow);
+}
+
+.social-link.hovered .link-glow {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.link-icon {
+  margin-right: 16px;
+  transition: all var(--transition-fast);
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.social-link:hover .link-icon {
+  transform: scale(1.2) rotate(5deg);
+  color: var(--text-accent);
+}
+
+.link-text {
+  font-size: clamp(1rem, 2.5vw, 1.1rem);
+  font-weight: 600;
+  color: var(--text-primary);
+  letter-spacing: 0.02em;
+  flex: 1;
+  transition: all var(--transition-fast);
+}
+
+.social-link:hover .link-text {
+  color: var(--text-accent);
+  text-shadow: 0 0 10px currentColor;
+}
+
+.link-glow {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--accent-gradient);
+  opacity: 0;
+  transform: scale(0.8);
+  transition: all var(--transition-medium);
+  border-radius: 16px;
+  z-index: -1;
+}
+
+/* Platform-specific hover effects */
+.social-link:nth-child(1):hover { /* Join Our Community */
+  border-color: #10b981;
+  box-shadow: 0 0 30px rgba(16, 185, 129, 0.4);
+}
+
+.social-link:nth-child(2):hover { /* Instagram */
+  border-color: #e4405f;
+}
+
+.social-link:nth-child(3):hover { /* Facebook */
+  border-color: #1877f2;
+}
+
+.social-link:nth-child(4):hover { /* LinkedIn */
+  border-color: #0077b5;
+}
+
+.social-link:nth-child(5):hover { /* WhatsApp */
+  border-color: #25d366;
+}
+
+.social-link:nth-child(6):hover { /* TikTok */
+  border-color: #ff0050;
+}
+
+.social-link:nth-child(7):hover { /* Gmail */
+  border-color: #ea4335;
+}
+
+/* Footer */
+.footer {
+  text-align: center;
+  opacity: 0.8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-top: auto;
+}
+
+.footer p {
+  color: var(--text-secondary);
+  font-size: clamp(0.8rem, 2vw, 0.9rem);
+  font-weight: 400;
+  text-align: center;
+  max-width: 300px;
+}
+
+.pulse-dot {
+  width: 8px;
+  height: 8px;
+  background: var(--text-accent);
+  border-radius: 50%;
+  animation: pulse 2s ease-in-out infinite;
+  flex-shrink: 0;
+}
+
+/* Enhanced Responsive Design */
+@media (max-width: 768px) {
+  .container {
+    padding: 30px 20px;
+  }
+  
+  .theme-toggle {
+    top: 15px;
+    right: 15px;
+    width: 45px;
+    height: 45px;
+  }
+  
+  .logo {
+    width: 80px;
+    height: 80px;
+  }
+  
+  .header {
+    margin-bottom: 40px;
+  }
+  
+  .social-link {
+    padding: 16px 20px;
+  }
+  
+  .links-container {
+    gap: 14px;
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    padding: 20px 16px;
+  }
+  
+  .theme-toggle {
+    top: 10px;
+    right: 10px;
+    width: 40px;
+    height: 40px;
+  }
+  
+  .logo {
+    width: 70px;
+    height: 70px;
+  }
+  
+  .header {
+    margin-bottom: 30px;
+  }
+  
+  .social-link {
+    padding: 14px 18px;
+  }
+  
+  .link-icon {
+    margin-right: 12px;
+  }
+  
+  .links-container {
+    gap: 12px;
+  }
+  
+  .footer {
+    flex-direction: column;
+    gap: 8px;
+  }
+}
+
+@media (max-width: 360px) {
+  .container {
+    padding: 15px 12px;
+  }
+  
+  .social-link {
+    padding: 12px 16px;
+  }
+  
+  .footer p {
+    font-size: 0.75rem;
+  }
+}
+
+/* Landscape orientation adjustments */
+@media (orientation: landscape) and (max-height: 600px) {
+  .container {
+    padding: 20px;
+    justify-content: flex-start;
+  }
+  
+  .header {
+    margin-bottom: 30px;
+  }
+  
+  .logo {
+    width: 100px;
+    height: 100px;
+  }
+  
+  .links-container {
+    margin-bottom: 20px;
+  }
+}
+
+/* Advanced Animation Effects */
+@keyframes slideInFromLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-100px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Accessibility Improvements */
+.social-link:focus,
+.theme-toggle:focus {
+  outline: 2px solid var(--text-accent);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .social-link {
+    border-width: 2px;
+  }
+  
+  .theme-toggle {
+    border-width: 2px;
+  }
+}

@@ -1,0 +1,18 @@
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://aidev-community.com/sitemap.xml
+
+# Crawl delay
+Crawl-delay: 1
+
+# Disallow any temporary or test files
+Disallow: /test/
+Disallow: /*.json$
+Disallow: /src/
+
+# Allow important files
+Allow: /logo.png
+Allow: /site.webmanifest
+Allow: /browserconfig.xml
