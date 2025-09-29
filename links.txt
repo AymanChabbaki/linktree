@@ -4,5 +4,6 @@ linkedin : https://www.linkedin.com/company/ai-dev-community/
 whatsap : https://chat.whatsapp.com/Ftvj3lJBgCy6MtLwGeM2kv
 tiktok :  https://www.tiktok.com/@ai.dev.community
 gmail : communityaidev@gmail.com
+discord : https://discord.gg/XduuPdg6bG
 
 logo : logo.png
